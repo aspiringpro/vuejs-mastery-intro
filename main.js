@@ -49,7 +49,7 @@ Vue.component('product', {
       <button type="button" name="remove" @click="removeFromCart">
         Remove
       </button>
-      <div class="cart"><p>({{cart}})</p></div>
+
       <a :href="link">More products like this</a>
     </div>
   </div>
@@ -80,15 +80,15 @@ Vue.component('product', {
         }
       ],
       sizes: ["small", "medium", "large"],
-      cart: 0,
+
     }
   },
   methods: { //using es6 syntax here
     addToCart(){
-      this.cart += 1
+      this.$emit('add-to-cart',this.variants[this.selectedVariant].variantId)
     },
     removeFromCart(){
-      this.cart -= 1
+      this.$emit('remove-from-cart',this.variants[this.selectedVariant].variantId)
     },
     updateProduct(index){
       this.selectedVariant = index
@@ -128,7 +128,16 @@ Vue.component('product', {
 var app = new Vue({
   el: "#app",
   data: {
-    premium: true
+    premium: true,
+    cart: []
+  },
+  methods: {
+  updateCart(id){
+      this.cart.push(id)
+    },
+  removeFromCart(id){
+    this.cart.pop(id)
+  }
   }
 
 });
